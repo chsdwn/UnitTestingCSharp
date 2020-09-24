@@ -15,6 +15,7 @@ namespace LetsTest.NUnitTests
         }
 
         [Test]
+        [Ignore("Ignored")]
         public void Add_WhenCalled_ReturnTheSumOfArguments()
         {
             var result = _math.Add(10, 5);
