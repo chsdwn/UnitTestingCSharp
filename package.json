@@ -1,0 +1,7 @@
+{
+  "name": "UnitTesting",
+  "version": "0.1.0",
+  "scripts": {
+    "test": "cd LetsTest.NUnitTests && dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info"
+  }
+}
