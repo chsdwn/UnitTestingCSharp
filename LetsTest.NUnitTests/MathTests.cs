@@ -23,27 +23,14 @@ namespace LetsTest.NUnitTests
         }
 
         [Test]
-        public void Max_FirstArgumentIsGreater_ReturnTheFirstArgument()
+        [TestCase(10, 5, 10)]
+        [TestCase(5, 10, 10)]
+        [TestCase(10, 10, 10)]
+        public void Max_WhenCalled_ReturnTheGreaterArgument(int a, int b, int expectedResult)
         {
-            var result = _math.Max(10, 5);
+            var result = _math.Max(a, b);
 
-            Assert.That(result, Is.EqualTo(10));
-        }
-
-        [Test]
-        public void Max_SecondArgumentIsGreater_ReturnTheSecondArgument()
-        {
-            var result = _math.Max(5, 10);
-
-            Assert.That(result, Is.EqualTo(10));
-        }
-
-        [Test]
-        public void Max_ArgumentsAreEqual_ReturnTheSameArgument()
-        {
-            var result = _math.Max(10, 10);
-
-            Assert.That(result, Is.EqualTo(10));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
 }
