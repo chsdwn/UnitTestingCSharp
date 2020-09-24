@@ -20,28 +20,23 @@ namespace LetsTest.UnitTests
         }
 
         [TestMethod]
-        public void CanBeCancelledBy_UserIsNotAdmin_ReturnsFalse()
+        public void CanBeCancelledBy_SameUserCancellingTheReservation_ReturnsTrue()
         {
-            // Arrange
-            var reservation = new Reservation();
+            var user = new User();
+            var reservation = new Reservation { MadeBy = user };
 
-            // Act
-            var result = reservation.CanBeCancelledBy(new User());
+            var result = reservation.CanBeCancelledBy(user);
 
-            // Assert
-            Assert.IsFalse(result);
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
-        public void CanBeCancelledBy_UserIsNull_ReturnsFalse()
+        public void CanBeCancelledBy_AnotherUserCancellingReservation_ReturnsFalse()
         {
-            // Arrange
-            var reservation = new Reservation();
+            var reservation = new Reservation { MadeBy = new User() };
 
-            // Act
-            var result = reservation.CanBeCancelledBy(null);
+            var result = reservation.CanBeCancelledBy(new User());
 
-            // Assert
             Assert.IsFalse(result);
         }
     }
