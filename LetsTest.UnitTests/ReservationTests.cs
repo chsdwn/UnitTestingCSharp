@@ -18,5 +18,31 @@ namespace LetsTest.UnitTests
             // Assert
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void CanBeCancelledBy_UserIsNotAdmin_ReturnsFalse()
+        {
+            // Arrange
+            var reservation = new Reservation();
+
+            // Act
+            var result = reservation.CanBeCancelledBy(new User());
+
+            // Assert
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void CanBeCancelledBy_UserIsNull_ReturnsFalse()
+        {
+            // Arrange
+            var reservation = new Reservation();
+
+            // Act
+            var result = reservation.CanBeCancelledBy(null);
+
+            // Assert
+            Assert.IsFalse(result);
+        }
     }
 }
