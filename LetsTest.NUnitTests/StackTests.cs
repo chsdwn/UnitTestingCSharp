@@ -16,92 +16,83 @@ namespace LetsTest.NUnitTests
         }
 
         [Test]
-        public void Count_WhenObjPushed_ReturnCountIncrementByOne()
-        {
-            var count = _stack.Count;
-            _stack.Push("a");
-            var result = _stack.Count;
-
-            Assert.That(result, Is.EqualTo(++count));
-        }
-
-        [Test]
-        public void Count_WhenPopCalled_ReturnCountDecrementByOne()
-        {
-            _stack.Push("a");
-            _stack.Push("b");
-            var count = _stack.Count;
-            _stack.Pop();
-            var result = _stack.Count;
-
-            Assert.That(result, Is.EqualTo(--count));
-        }
-
-        [Test]
-        public void Count_WhenPeekCalled_ReturnTheSameCount()
-        {
-            _stack.Push("a");
-            var count = _stack.Count;
-            _stack.Peek();
-            var result = _stack.Count;
-
-            Assert.That(result, Is.EqualTo(count));
-        }
-
-        [Test]
-        public void Push_WhenCalled_AddObj()
-        {
-            _stack.Push("a");
-            var result = _stack.Peek();
-
-            Assert.That(result, Is.EqualTo("a"));
-        }
-
-        [Test]
-        public void Push_ObjIsNull_ThrowArgumentNullException()
+        public void Push_ArgIsNull_ThrowArgNullException()
         {
             Assert.That(() => _stack.Push(null), Throws.ArgumentNullException);
         }
 
         [Test]
-        public void Pop_WhenCalled_ReturnLastObj()
+        public void Push_ValidArg_AddTheObjectToTheStack()
         {
             _stack.Push("a");
-            var result = _stack.Pop();
 
-            Assert.That(result, Is.EqualTo("a"));
+            Assert.That(_stack.Count, Is.EqualTo(1));
         }
 
         [Test]
-        public void Pop_WhenCalled_DeleteLastObj()
+        public void Count_EmptyStack_ReturnZero()
         {
-            _stack.Push("a");
-            _stack.Push("b");
-            _stack.Pop();
-            var result = _stack.Peek();
-
-            Assert.That(result, Is.EqualTo("a"));
+            Assert.That(_stack.Count, Is.EqualTo(0));
         }
 
         [Test]
-        public void Pop_StackIsEmpty_ThrowInvalidOperationException()
+        public void Pop_EmptyStack_ThrowInvalidOperationException()
         {
             Assert.That(() => _stack.Pop(), Throws.InvalidOperationException);
         }
 
         [Test]
-        public void Peek_WhenCalled_ReturnLastObj()
+        public void Pop_StackWithAFewObjects_ReturnObjectOnTheTop()
         {
             _stack.Push("a");
-            var result = _stack.Peek();
+            _stack.Push("b");
+            _stack.Push("c");
 
-            Assert.That(result, Is.EqualTo("a"));
+            var result = _stack.Pop();
+
+            Assert.That(result, Is.EqualTo("c"));
         }
 
         [Test]
-        public void Peek_StackIsEmpty_ThrowInvalidOperationException()
+        public void Pop_StackWithAFewObjects_RemoveObjectOnTheTop()
+        {
+            _stack.Push("a");
+            _stack.Push("b");
+            _stack.Push("c");
+
+            _stack.Pop();
+
+            Assert.That(_stack.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void Peek_EmptyStack_ThrowInvalidOperationException()
         {
             Assert.That(() => _stack.Peek(), Throws.InvalidOperationException);
+        }
+
+        [Test]
+        public void Peek_StackWithObjects_ReturnObjectOnTopOfTheStack()
+        {
+            _stack.Push("a");
+            _stack.Push("b");
+            _stack.Push("c");
+
+            var result = _stack.Peek();
+
+            Assert.That(result, Is.EqualTo("c"));
+        }
+
+        [Test]
+        public void Peek_StackWithObjects_DoesNotRemoveTheObjectOnTopOfTheStack()
+        {
+            _stack.Push("a");
+            _stack.Push("b");
+            _stack.Push("c");
+
+            _stack.Peek();
+
+            Assert.That(_stack.Count, Is.EqualTo(3));
         }
     }
 }
