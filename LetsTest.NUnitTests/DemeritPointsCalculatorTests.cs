@@ -7,37 +7,37 @@ namespace LetsTest.NUnitTests
     [TestFixture]
     public class DemeritPointsCalculatorTests
     {
-        private DemeritPointsCalculator _demeritPointsCalculator;
+        private DemeritPointsCalculator _calculator;
 
         [SetUp]
         public void SetUp()
         {
-            _demeritPointsCalculator = new DemeritPointsCalculator();
+            _calculator = new DemeritPointsCalculator();
         }
 
         [Test]
-        public void CalculateDemeritPoints_SpeedIsLessThanZero_ThrowArgumentOutOfRangeException()
+        [TestCase(-1)]
+        [TestCase(301)]
+        public void CalculateDemeritPoints_SpeedIsOutOfRange_ThrowArgumentOutOfRangeException(int speed)
         {
             Assert.That(
-                () => _demeritPointsCalculator.CalculateDemeritPoints(-1),
+                () => _calculator.CalculateDemeritPoints(speed),
                 Throws.TypeOf<ArgumentOutOfRangeException>()
             );
         }
 
         [Test]
-        public void CalculateDemeritPoints_SpeedIsLessThanSpeedLimit_ReturnZero()
+        [TestCase(0, 0)]
+        [TestCase(64, 0)]
+        [TestCase(65, 0)]
+        [TestCase(66, 0)]
+        [TestCase(70, 1)]
+        [TestCase(75, 2)]
+        public void CalculateDemeritPoints_WhenCalled_ReturnDemeritPoints(int speed, int expectedResult)
         {
-            var result = _demeritPointsCalculator.CalculateDemeritPoints(0);
+            var result = _calculator.CalculateDemeritPoints(speed);
 
-            Assert.That(result, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void CalculateDemeritPoints_SpeedIsHigherThanSpeedLimit_ReturnOneForEveryFiveOverTheLimit()
-        {
-            var result = _demeritPointsCalculator.CalculateDemeritPoints(70);
-
-            Assert.That(result, Is.EqualTo(1));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
 }
