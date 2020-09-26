@@ -9,4 +9,9 @@ namespace LetsTest.Mocking
             return File.ReadAllText(path);
         }
     }
+
+    public interface IFileReader
+    {
+        string Read(string path);
+    }
 }
