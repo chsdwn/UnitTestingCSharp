@@ -1,6 +1,6 @@
 using LetsTest.Mocking;
 
-namespace LetsTest.NUnitTests
+namespace LetsTest.NUnitTests.Mocking
 {
     // Can be called other projects like "Scub" or "Mock"
     public class FakeFileReader : IFileReader
