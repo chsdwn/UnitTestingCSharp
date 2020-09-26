@@ -9,8 +9,7 @@ namespace LetsTest.NUnitTests.Mocking
         [Test]
         public void ReadVideoTitle_EmptyFile_ReturnError()
         {
-            var service = new VideoService();
-            service.FileReader = new FakeFileReader();
+            var service = new VideoService(new FileReader());
 
             var result = service.ReadVideoTitle();
 
