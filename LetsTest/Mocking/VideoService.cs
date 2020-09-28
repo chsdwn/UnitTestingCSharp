@@ -8,10 +8,13 @@ namespace LetsTest.Mocking
 {
     public class VideoService
     {
-        private IFileReader _fileReader { get; set; }
+        private readonly IVideoRepository _repository;
 
-        public VideoService(IFileReader fileReader = null)
+        private readonly IFileReader _fileReader;
+
+        public VideoService(IVideoRepository repository = null, IFileReader fileReader = null)
         {
+            _repository = repository ?? new VideoRepository();
             _fileReader = fileReader ?? new FileReader();
         }
 
@@ -28,18 +31,12 @@ namespace LetsTest.Mocking
         {
             var videoIds = new List<int>();
 
-            using (var context = new VideoContext())
-            {
-                var videos =
-                    (from video in context.Videos
-                     where !video.IsProcessed
-                     select video).ToList();
+            var videos = _repository.GetUnprocessedVideos();
 
-                foreach (var v in videos)
-                    videoIds.Add(v.Id);
+            foreach (var v in videos)
+                videoIds.Add(v.Id);
 
-                return String.Join(",", videoIds);
-            }
+            return String.Join(",", videoIds);
         }
     }
 
