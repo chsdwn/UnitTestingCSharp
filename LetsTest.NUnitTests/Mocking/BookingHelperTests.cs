@@ -18,7 +18,7 @@ namespace LetsTest.NUnitTests.Mocking
         {
             _existingBooking = new Booking
             {
-                Id = 1,
+                Id = 2,
                 ArrivalDate = ArriveOn(2017, 1, 15),
                 DepartureDate = DepartOn(2017, 1, 20),
                 Reference = "a"
@@ -35,12 +35,25 @@ namespace LetsTest.NUnitTests.Mocking
         {
             var result = BookingHelper.OverlappingBookingsExist(new Booking
             {
-                Id = 2,
+                Id = 1,
                 ArrivalDate = Before(_existingBooking.ArrivalDate, days: 2),
                 DepartureDate = Before(_existingBooking.ArrivalDate)
             }, _repository.Object);
 
             Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void BookingStartsBeforeAndFinishesInTheMiddleOfAnExistingBooking_ReturnExistingBookingsReference()
+        {
+            var result = BookingHelper.OverlappingBookingsExist(new Booking
+            {
+                Id = 1,
+                ArrivalDate = Before(_existingBooking.ArrivalDate),
+                DepartureDate = After(_existingBooking.ArrivalDate)
+            }, _repository.Object);
+
+            Assert.That(result, Is.EqualTo(_existingBooking.Reference));
         }
 
         private DateTime After(DateTime dateTime)
