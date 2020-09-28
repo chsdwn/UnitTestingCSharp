@@ -3,14 +3,14 @@ using System;
 namespace LetsTest.Mocking
 {
 
-    public class HousekeeperHelper
+    public class HouseKeeperService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStatementGenerator _statementGenerator;
         private readonly IEmailSender _emailSender;
         private readonly IXtraMessageBox _messageBox;
 
-        public HousekeeperHelper(
+        public HouseKeeperService(
             IUnitOfWork unitOfWork,
             IStatementGenerator statementGenerator,
             IEmailSender emailSender,
