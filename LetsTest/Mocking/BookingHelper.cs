@@ -6,12 +6,12 @@ namespace LetsTest.Mocking
 {
     public static class BookingHelper
     {
-        public static string OverlappingBookingsExist(Booking booking, IBookingStorage storage)
+        public static string OverlappingBookingsExist(Booking booking, IBookingRepository storage)
         {
             if (booking.Status == "Cancelled")
                 return string.Empty;
 
-            var bookings = storage.GetAvailableBookings(booking);
+            var bookings = storage.GetActiveBookings(booking.Id);
 
             var overlappingBooking =
                 bookings.FirstOrDefault(

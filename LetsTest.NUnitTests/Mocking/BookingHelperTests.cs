@@ -10,14 +10,6 @@ namespace LetsTest.NUnitTests.Mocking
     [TestFixture]
     public class BookingHelper_OverlappingBookingsExistTests
     {
-        private Mock<IBookingStorage> _storage;
-
-        [SetUp]
-        public void SetUp()
-        {
-            _storage = new Mock<IBookingStorage>();
-        }
-
         [Test]
         public void BookingStartsAndFinishesBeforeAnExistingBooking_ReturnEmptyString()
         {
