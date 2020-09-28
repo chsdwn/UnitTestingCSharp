@@ -2,22 +2,36 @@ using System;
 
 namespace LetsTest.Mocking
 {
-    public static class HousekeeperHelper
+
+    public class HousekeeperHelper
     {
-        public static bool SendStatementEmails(
-            DateTime statementDate,
-            IHousekeeperRepository housekeeperRepository,
-            IEmailRepository emailRepository,
-            ISaveRepository saveRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IStatementGenerator _statementGenerator;
+        private readonly IEmailSender _emailSender;
+        private readonly IXtraMessageBox _messageBox;
+
+        public HousekeeperHelper(
+            IUnitOfWork unitOfWork,
+            IStatementGenerator statementGenerator,
+            IEmailSender emailSender,
+            IXtraMessageBox messageBox)
         {
-            var housekeepers = housekeeperRepository.GetHousekeepers();
+            _unitOfWork = unitOfWork;
+            _statementGenerator = statementGenerator;
+            _emailSender = emailSender;
+            _messageBox = messageBox;
+        }
+
+        public bool SendStatementEmails(DateTime statementDate)
+        {
+            var housekeepers = _unitOfWork.Query<Housekeeper>();
 
             foreach (var housekeeper in housekeepers)
             {
                 if (housekeeper.Email == null)
                     continue;
 
-                var statementFilename = saveRepository.SaveStatement(housekeeper.Oid, housekeeper.FullName, statementDate);
+                var statementFilename = _statementGenerator.SaveStatement(housekeeper.Oid, housekeeper.FullName, statementDate);
 
                 if (string.IsNullOrWhiteSpace(statementFilename))
                     continue;
@@ -27,12 +41,12 @@ namespace LetsTest.Mocking
 
                 try
                 {
-                    emailRepository.EmailFile(emailAddress, emailBody, statementFilename,
+                    _emailSender.EmailFile(emailAddress, emailBody, statementFilename,
                         string.Format("Sandpiper Statement {0:yyyy-MM} {1}", statementDate, housekeeper.FullName));
                 }
                 catch (Exception e)
                 {
-                    XtraMessageBox.Show(e.Message, string.Format("Email failure: {0}", emailAddress),
+                    _messageBox.Show(e.Message, string.Format("Email failure: {0}", emailAddress),
                         MessageBoxButtons.OK);
                 }
             }
@@ -46,9 +60,14 @@ namespace LetsTest.Mocking
         OK
     }
 
-    public class XtraMessageBox
+    public interface IXtraMessageBox
     {
-        public static void Show(string s, string housekeeperStatements, MessageBoxButtons ok)
+        void Show(string s, string housekeeperStatements, MessageBoxButtons ok);
+    }
+
+    public class XtraMessageBox : IXtraMessageBox
+    {
+        public void Show(string s, string housekeeperStatements, MessageBoxButtons ok)
         {
         }
     }

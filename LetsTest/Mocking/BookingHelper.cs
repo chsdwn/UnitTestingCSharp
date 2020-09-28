@@ -23,7 +23,12 @@ namespace LetsTest.Mocking
         }
     }
 
-    public class UnitOfWork
+    public interface IUnitOfWork
+    {
+        IQueryable<T> Query<T>();
+    }
+
+    public class UnitOfWork : IUnitOfWork
     {
         public IQueryable<T> Query<T>()
         {

@@ -3,12 +3,12 @@ using System.IO;
 
 namespace LetsTest.Mocking
 {
-    public interface ISaveRepository
+    public interface IStatementGenerator
     {
         string SaveStatement(int housekeeperOid, string housekeeperName, DateTime statementDate);
     }
 
-    public class SaveRepository : ISaveRepository
+    public class StatementGenerator : IStatementGenerator
     {
         public string SaveStatement(int housekeeperOid, string housekeeperName, DateTime statementDate)
         {

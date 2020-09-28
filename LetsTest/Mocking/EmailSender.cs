@@ -5,13 +5,12 @@ using System.Text;
 
 namespace LetsTest.Mocking
 {
-
-    public interface IEmailRepository
+    public interface IEmailSender
     {
         void EmailFile(string emailAddress, string emailBody, string filename, string subject);
     }
 
-    public class EmailRepository : IEmailRepository
+    public class EmailSender : IEmailSender
     {
         public void EmailFile(string emailAddress, string emailBody, string filename, string subject)
         {
