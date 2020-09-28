@@ -2,7 +2,7 @@ namespace LetsTest.Mocking
 {
     public interface IEmployeeStorage
     {
-        void Delete(int id);
+        void DeleteEmployee(int id);
     }
 
     public class EmployeeStorage : IEmployeeStorage
@@ -14,9 +14,11 @@ namespace LetsTest.Mocking
             _db = new EmployeeContext();
         }
 
-        public void Delete(int id)
+        public void DeleteEmployee(int id)
         {
             var employee = _db.Employees.Find(id);
+            if (employee == null) return;
+
             _db.Employees.Remove(employee);
             _db.SaveChanges();
         }

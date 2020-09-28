@@ -4,16 +4,16 @@ namespace LetsTest.Mocking
 {
     public class EmployeeController
     {
-        private IEmployeeStorage _employeeStorage;
+        private IEmployeeStorage _storage;
 
-        public EmployeeController(IEmployeeStorage employeeStorage)
+        public EmployeeController(IEmployeeStorage storage)
         {
-            _employeeStorage = employeeStorage;
+            _storage = storage;
         }
 
         public ActionResult DeleteEmployee(int id)
         {
-            _employeeStorage.Delete(id);
+            _storage.DeleteEmployee(id);
             return RedirectToAction("Employees");
         }
 
