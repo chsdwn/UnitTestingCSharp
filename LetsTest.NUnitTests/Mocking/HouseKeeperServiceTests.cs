@@ -51,5 +51,22 @@ namespace LetsTest.NUnitTests.Mocking
                 _housekeeper.FullName,
                 _statementDate));
         }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void SendStatementEmails_HouseKeepersEmailIsGivenArg_ShouldNotGenerateStatements(string email)
+        {
+            _housekeeper.Email = "";
+            _service.SendStatementEmails(_statementDate);
+
+            _statementGenerator.Verify(
+                sg => sg.SaveStatement(
+                    _housekeeper.Oid,
+                    _housekeeper.FullName,
+                    _statementDate),
+                Times.Never);
+        }
     }
 }

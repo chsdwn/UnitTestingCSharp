@@ -28,7 +28,7 @@ namespace LetsTest.Mocking
 
             foreach (var housekeeper in housekeepers)
             {
-                if (housekeeper.Email == null)
+                if (String.IsNullOrWhiteSpace(housekeeper.Email))
                     continue;
 
                 var statementFilename = _statementGenerator.SaveStatement(housekeeper.Oid, housekeeper.FullName, statementDate);
