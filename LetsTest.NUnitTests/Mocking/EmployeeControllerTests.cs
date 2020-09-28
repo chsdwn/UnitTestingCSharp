@@ -7,28 +7,28 @@ namespace LetsTest.NUnitTests.Mocking
     [TestFixture]
     public class EmployeeControllerTests
     {
-        private Mock<IEmployeeStorage> _employeeStorage;
-        private EmployeeController _employeeController;
+        private Mock<IEmployeeStorage> _storage;
+        private EmployeeController _controller;
 
         [SetUp]
         public void SetUp()
         {
-            _employeeStorage = new Mock<IEmployeeStorage>();
-            _employeeController = new EmployeeController(_employeeStorage.Object);
+            _storage = new Mock<IEmployeeStorage>();
+            _controller = new EmployeeController(_storage.Object);
         }
 
         [Test]
-        public void DeleteEmployee_WhenCalled_CallEmployeeStorageDeleteMethod()
+        public void DeleteEmployee_WhenCalled_DeleteTheEmployeeFromDb()
         {
-            _employeeController.DeleteEmployee(1);
+            _controller.DeleteEmployee(1);
 
-            _employeeStorage.Verify(e => e.Delete(1), Times.Once);
+            _storage.Verify(s => s.DeleteEmployee(1));
         }
 
         [Test]
         public void DeleteEmployee_WhenCalled_ReturnRedirectResult()
         {
-            var result = _employeeController.DeleteEmployee(1);
+            var result = _controller.DeleteEmployee(1);
 
             Assert.That(result, Is.TypeOf<RedirectResult>());
         }
